@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "Node",
+    "module": "commonjs",
+    "declaration": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "removeComments": true,
+    "incremental": true,
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "paths": {}
+  },
+  "include": [
+      "./src/**/*"
+  ],
+  "exclude": [
+      "node_modules/",
+      "dist/"
+  ]
+}
