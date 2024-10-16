@@ -33,6 +33,7 @@ Additional notes:
 
 - Because of the limitation of the Unsplash-JS Demo app, where only 50 requests can be made to the API in one hour, **the "max" parameter was introduced to the API endpoint, to limit the number of images requested by Unsplash**. The default query to unsplash, can return 10 images per page, and pagination occurs which requires an additional request afterwards. If the rate limit is reached, the system should respond appropiatly with a 429 error code. I did not add the CacheService to the UnsplashService, as during my tests, it seems to me that unsplash-js has it's own caching mechanism in place, and does not send the same request again multiple times.
 - Only basic sanitization is being performed on the input and output parameters. As Google Vision is returning the labels with uppercase starting characters, every returned label is lowercased before being compared both on the input side and on the output side. Later on, the software should be prepared to handle additional edge cases (ex. like how Google lables have spacing in their names) which were not handled in this naive example, as it would extend the scope of it considerably.
+- The slowest part of the API are requests made to the Google Vision service. It is possible, that those batch requests could be paralelized, but without actual information on limits and settings for the provided credentials, I decided to not go with this.
 
 ## Considerations
 

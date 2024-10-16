@@ -66,7 +66,7 @@ export class GoogleVisionService {
 
       this.loggerService.debug(`Labels found for ${responseUri}: ${JSON.stringify(labelStrings)}`);
       labelResponse[responseUri] = labelStrings;
-      this.cacheService.set(responseUri, labelStrings, 1);
+      this.cacheService.set(responseUri, labelStrings, 60);
     }
 
     return labelResponse;

@@ -4,19 +4,11 @@ import { GoogleVisionService } from "./google-vision.service";
 import { UnsplashService } from "./unsplash.service";
 
 export class AnalyzeImageService {
-  private readonly unsplashService: UnsplashService;
-  private readonly googleVisionService: GoogleVisionService;
-  private readonly loggerService: LoggerService;
-
   constructor(
-    unsplashService: UnsplashService,
-    googleVisionService: GoogleVisionService,
-    loggerService: LoggerService,
+    private readonly unsplashService: UnsplashService,
+    private readonly googleVisionService: GoogleVisionService,
+    private readonly loggerService: LoggerService,
   ) {
-    this.unsplashService = unsplashService;
-    this.googleVisionService = googleVisionService;
-    this.loggerService = loggerService;
-
     this.loggerService.setContext(AnalyzeImageService.name);
   }
 
