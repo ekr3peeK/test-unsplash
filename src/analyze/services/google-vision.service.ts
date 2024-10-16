@@ -12,7 +12,7 @@ type labelResponse = {
 
 export class GoogleVisionService {
   /** The maximum number of requests that can be sent as a batch to google vision is 16 according to the documentation */
-  private readonly MAX_REQUESTS_PER_BATCH = 16;
+  public readonly MAX_REQUESTS_PER_BATCH = 16;
 
   private visionClient: ImageAnnotatorClient;
 

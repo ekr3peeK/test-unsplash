@@ -2,6 +2,7 @@ import { createApi } from 'unsplash-js';
 import { ConfigService } from '../../common/services/config.service';
 import { LoggerService } from '../../common/services/logger.service';
 import { ApiException } from '../../common/exceptions/api.exception';
+import { BadRequestException } from '../../common/exceptions/bad-request.exception';
 
 type UnsplashAPIType = ReturnType<typeof createApi>;
 
@@ -26,10 +27,15 @@ export class UnsplashService {
   }
 
   async getPhotoUrlsForKeyword(query: string, maxResults: number = Infinity) {
+    if (maxResults <= 1) {
+      throw new BadRequestException("The max results, if specified, should be a positive number");
+    }
+
     this.loggerService.info(`Searching for photos based on the keyword: ${query}. Maximum results to look for is: ${maxResults}`);
-    const photos: string[] = [];
 
     let page = 1;
+    const photos: string[] = [];
+
     do {
       this.loggerService.debug(`Performing paginated search on page ${page}`);
 
