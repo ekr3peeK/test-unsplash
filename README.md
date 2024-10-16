@@ -38,3 +38,7 @@ Additional notes:
 ## Considerations
 
 The biggest challenge that I found while writing this test, were the ease-of-life improvements that were introduced in NestJS when writing Express based REST APIs. However, I found this challenge interesting to do, but I am not entirely sure if I structured it as it should have been structured in an Express JS API as I am more familiar with structuring code using NestJS module system.
+
+## Fun facts
+
+Unsplash contains some very very dark images, you should try searching for the keyword `clown` with the labels `fun` ;)
