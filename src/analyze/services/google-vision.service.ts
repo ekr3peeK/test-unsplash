@@ -64,6 +64,7 @@ export class GoogleVisionService {
       const responseUri = uncachedUrls[responseIndex];
       const labelStrings = (response.labelAnnotations?.map(label => label.description).filter(Boolean) as string[]) ?? [];
 
+      this.loggerService.debug(`Labels found for ${responseUri}: ${JSON.stringify(labelStrings)}`);
       labelResponse[responseUri] = labelStrings;
       this.cacheService.set(responseUri, labelStrings, 1);
     }

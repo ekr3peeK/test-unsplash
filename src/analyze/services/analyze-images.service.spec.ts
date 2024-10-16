@@ -22,7 +22,11 @@ describe("AnalyzeImageService", () => {
       'url3': ['label1', 'label2']
     });
 
-    const analyzeImageResponse = await analyzeImageService.analyzeByKeyword('keyword', ['label1', 'label2']);
+    const analyzeImageResponse = await analyzeImageService.analyzeByKeyword({
+      keyword: 'keyword', 
+      labels: ['label1', 'label2']
+    });
+    
     expect(analyzeImageResponse.length).toBeDefined();
     expect(analyzeImageResponse.length).toBe(2);
   

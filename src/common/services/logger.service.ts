@@ -37,7 +37,7 @@ export class LoggerService {
   private log(message: string, level: number) {
     if (this.logLevel > level) return false;
 
-    console.log(`[${this.context}::${level}] ${message}`);
+    console.log(`[${this.context}::${LogLevel[level] ?? "UNKNOWN"}] ${message}`);
     return true;
   }
 }

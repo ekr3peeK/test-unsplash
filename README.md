@@ -12,7 +12,8 @@ The API listens to a single endpoint only, `/analyze` for POST requests. The cor
 ```
 {
   keyword: string,
-  labels: string[]
+  labels: string[],
+  max?: number // Introduced to not break the rate limit on the Demo APP provided by Unsplash. If ommited, a maximum of 16 images will be requested from Unsplash
 }
 ```
 
@@ -30,7 +31,8 @@ Besides the requested base functionalities the following things were added:
 
 Additional notes:
 
-- Because of the limitation of the Unsplash-JS Demo app, where only 50 requests can be made to the API in one hour, **the system was hardcoded, that for each request, only a maximum of 50 images are requested from Unsplash**. If the rate limit is still reached, the system should respond appropiatly with a 429 error code. If you want to remove this limitation, you can do so in the `analyze-image.service.ts:30`. I did not add the CacheService to the UnsplashService, as during my tests, it seems to me that unsplash-js has it's own caching mechanism in place, and does not send the same request again multiple times. 
+- Because of the limitation of the Unsplash-JS Demo app, where only 50 requests can be made to the API in one hour, **the "max" parameter was introduced to the API endpoint, to limit the number of images requested by Unsplash**. The default query to unsplash, can return 10 images per page, and pagination occurs which requires an additional request afterwards. If the rate limit is reached, the system should respond appropiatly with a 429 error code. I did not add the CacheService to the UnsplashService, as during my tests, it seems to me that unsplash-js has it's own caching mechanism in place, and does not send the same request again multiple times.
+- Only basic sanitization is being performed on the input and output parameters. As Google Vision is returning the labels with uppercase starting characters, every returned label is lowercased before being compared both on the input side and on the output side. Later on, the software should be prepared to handle additional edge cases (ex. like how Google lables have spacing in their names) which were not handled in this naive example, as it would extend the scope of it considerably.
 
 ## Considerations
 

@@ -6,11 +6,11 @@ export class AnalyzeController {
   constructor(private readonly analyzeImageService: AnalyzeImageService) {}
 
   async analyze(req: Request<unknown, unknown, AnalyzeInputDto>, res: Response) {
-    const payload = req.body;
-    const matches = await this.analyzeImageService.analyzeByKeyword(payload.keyword, payload.labels);
+    const analyzeInputDto = req.body;
+    const matches = await this.analyzeImageService.analyzeByKeyword(analyzeInputDto);
 
-    res.status(202).send({
-      keyword: payload.keyword,
+    res.status(200).send({
+      keyword: analyzeInputDto.keyword,
       matches
     });
   }

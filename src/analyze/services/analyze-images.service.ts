@@ -1,4 +1,5 @@
 import { LoggerService } from "../../common/services/logger.service";
+import { AnalyzeInputDto } from "../dto/analyze-input.dto";
 import { GoogleVisionService } from "./google-vision.service";
 import { UnsplashService } from "./unsplash.service";
 
@@ -19,18 +20,18 @@ export class AnalyzeImageService {
     this.loggerService.setContext(AnalyzeImageService.name);
   }
 
-  async analyzeByKeyword(keyword: string, labels: string[]) {
-    this.loggerService.info(`Fetching and analyzing images for "${keyword}"`);
+  async analyzeByKeyword(analyzeInputDto: AnalyzeInputDto) {
+    this.loggerService.info(`Fetching and analyzing images for "${analyzeInputDto.keyword}"`);
 
     const response: Array<{
       image_url: string,
       labels: string[]
     }> = [];
 
-    const imageUris = await this.unsplashService.getPhotoUrlsForKeyword(keyword, 50);
+    const imageUris = await this.unsplashService.getPhotoUrlsForKeyword(analyzeInputDto.keyword, analyzeInputDto.max ?? 16);
     const annotatedLabels = await this.googleVisionService.detectLabels(imageUris);
 
-    const sanitizedCheckLabels = labels.map(label => label.toLowerCase());
+    const sanitizedCheckLabels = analyzeInputDto.labels.map(label => label.toLowerCase());
     for (const imageUri in annotatedLabels) {
       const sanitizedImageLabels = annotatedLabels[imageUri].map(label => label.toLowerCase());
       if (this.doLabelsMatch(sanitizedCheckLabels, sanitizedImageLabels)) {
@@ -41,6 +42,7 @@ export class AnalyzeImageService {
       }
     }
 
+    this.loggerService.info(`Found ${response.length} images with matching labels`);
     return response;
   }
 
