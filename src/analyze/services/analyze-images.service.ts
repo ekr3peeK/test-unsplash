@@ -3,13 +3,11 @@ import { GoogleVisionService } from "./google-vision.service";
 import { UnsplashService } from "./unsplash.service";
 
 export class AnalyzeImageService {
-  private static instance: AnalyzeImageService;
-
   private readonly unsplashService: UnsplashService;
   private readonly googleVisionService: GoogleVisionService;
   private readonly loggerService: LoggerService;
 
-  private constructor(
+  constructor(
     unsplashService: UnsplashService,
     googleVisionService: GoogleVisionService,
     loggerService: LoggerService,
@@ -22,43 +20,31 @@ export class AnalyzeImageService {
   }
 
   async analyzeByKeyword(keyword: string, labels: string[]) {
-    this.loggerService.log(`Fetching and analyzing images for "${keyword}"`);
+    this.loggerService.info(`Fetching and analyzing images for "${keyword}"`);
 
-    const imageUris = await this.unsplashService.getPhotoUrlsForKeyword(keyword, 10);
+    const response: Array<{
+      image_url: string,
+      labels: string[]
+    }> = [];
+
+    const imageUris = await this.unsplashService.getPhotoUrlsForKeyword(keyword, 40);
     const annotatedLabels = await this.googleVisionService.detectLabels(imageUris);
 
-    console.log("Labels", annotatedLabels);
-    return null;
-
     const sanitizedCheckLabels = labels.map(label => label.toLowerCase());
-
     for (const imageUri in annotatedLabels) {
       const sanitizedImageLabels = annotatedLabels[imageUri].map(label => label.toLowerCase());
-      if (!this.doLabelsMatch(sanitizedCheckLabels, sanitizedImageLabels)) {
-        delete annotatedLabels.imageUri;
+      if (this.doLabelsMatch(sanitizedCheckLabels, sanitizedImageLabels)) {
+        response.push({
+          image_url: imageUri,
+          labels: annotatedLabels[imageUri]
+        });
       }
     }
 
-    return annotatedLabels;
+    return response;
   }
 
   private doLabelsMatch(labels: string[], comparandLabels: string[]) {
     return labels.every(label => comparandLabels.includes(label));
-  }
-
-  static fetch(
-    unsplashService: UnsplashService,
-    googleVisionService: GoogleVisionService,
-    loggerService: LoggerService,
-  ) {
-    if (!this.instance) {
-      this.instance = new AnalyzeImageService(
-        unsplashService,
-        googleVisionService,
-        loggerService
-      );
-    }
-
-    return this.instance;
   }
 }

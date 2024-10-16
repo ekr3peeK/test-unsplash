@@ -1,26 +1,17 @@
 import { Request, Response } from 'express';
+import { AnalyzeImageService } from '../services/analyze-images.service';
 
-import type { analyzeInputDtoType } from '../dto/analyze-input.dto';
-import { UnsplashService } from '../services/unsplash.service';
-
+import type { AnalyzeInputDto } from '../dto/analyze-input.dto';
 export class AnalyzeController {
-  private readonly unsplashService: UnsplashService;
+  constructor(private readonly analyzeImageService: AnalyzeImageService) {}
 
-  constructor(unsplashService: UnsplashService) {
-    this.unsplashService = unsplashService;
-  }
-
-  async analyze(req: Request<unknown, unknown, analyzeInputDtoType>, res: Response) {
+  async analyze(req: Request<unknown, unknown, AnalyzeInputDto>, res: Response) {
     const payload = req.body;
-
-    const response = await this.unsplashService.getPhotoUrlsForKeyword(payload.keyword);
-    console.log("RESPONSE IS", response[0]);
+    const matches = await this.analyzeImageService.analyzeByKeyword(payload.keyword, payload.labels);
 
     res.status(202).send({
-      payload: payload,
-      adam: 'adam'
+      keyword: payload.keyword,
+      matches
     });
-
-    return;
   }
 }

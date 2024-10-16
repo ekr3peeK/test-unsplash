@@ -1,8 +1,8 @@
 import zod from 'zod';
 
-export const analyizeInputDto = zod.object({
+export const analyizeInputDtoZod = zod.object({
   keyword: zod.string(),
-  labels: zod.array(zod.string())
+  labels: zod.array(zod.string()).min(1)
 });
 
-export type analyzeInputDtoType = zod.infer<typeof analyizeInputDto>;
+export type AnalyzeInputDto = zod.infer<typeof analyizeInputDtoZod>;

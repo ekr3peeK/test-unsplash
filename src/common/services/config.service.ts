@@ -5,11 +5,9 @@ import { configSchema } from './../schemas/config.schema';
 type configType = zod.infer<typeof configSchema>;
 
 export class ConfigService {
-  private static instance: ConfigService;
-  
   private readonly config: configType;
   
-  private constructor() {
+  constructor() {
     const configEnv = dotenv.config();
     const parsedEnv = configSchema.safeParse(configEnv.parsed);
 
@@ -22,13 +20,5 @@ export class ConfigService {
 
   get<TKey extends keyof configType>(key: TKey): configType[TKey] {
     return this.config[key];
-  }
-
-  static fetch() {
-    if (!this.instance) {
-      this.instance = new ConfigService();
-    }
-
-    return this.instance;
   }
 }

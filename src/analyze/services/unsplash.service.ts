@@ -1,5 +1,7 @@
 import { createApi } from 'unsplash-js';
 import { ConfigService } from '../../common/services/config.service';
+import { LoggerService } from '../../common/services/logger.service';
+import { ApiException } from '../../common/exceptions/api.exception';
 
 type UnsplashAPIType = ReturnType<typeof createApi>;
 
@@ -10,20 +12,27 @@ type searchPhotosQuery = {
 }
 
 export class UnsplashService {
-  private static instance: UnsplashService;
   private readonly api: UnsplashAPIType; 
 
-  private constructor(configService: ConfigService) {
+  constructor(
+    private readonly configService: ConfigService, 
+    private readonly loggerService: LoggerService
+  ) {
+    this.loggerService.setContext(UnsplashService.name);
+
     this.api = createApi({
-      accessKey: configService.get("UNSPLASH_ACCESSKEY"), 
+      accessKey: this.configService.get("UNSPLASH_ACCESSKEY"), 
     });
   }
 
   async getPhotoUrlsForKeyword(query: string, maxResults: number = Infinity) {
+    this.loggerService.info(`Searching for photos based on the keyword: ${query}. Maximum results to look for is: ${maxResults}`);
     const photos: string[] = [];
 
     let page = 1;
     do {
+      this.loggerService.debug(`Performing paginated search on page ${page}`);
+
       const response = await this.searchPhotos({
         query,
         page,
@@ -40,24 +49,21 @@ export class UnsplashService {
   }
 
   private async searchPhotos(queryDto: searchPhotosQuery) {
-    console.log("Searching usplash", queryDto);
+    this.loggerService.debug(`Performing search on unsplash api for: ${JSON.stringify(queryDto)}`);
     
-    const response = await this.api.search.getPhotos({
-      ...queryDto,
-    });
+    try {
+      const response = await this.api.search.getPhotos({
+        ...queryDto,
+      });
 
-    if (response.errors) {
-      throw new Error(`Failed to get photos from Unsplash: ${response.errors.join(", ")}`);
+      if (response.errors) {
+        this.loggerService.error(`Search failed for: ${JSON.stringify(queryDto)}`);
+        throw new Error(`Failed to get photos from Unsplash: ${response.errors.join(", ")}`);
+      }
+  
+      return response.response;
+    } catch (err) {
+      throw new ApiException("Failed to fetch photos from unsplash - it is possible that rate limit has been reached, please try again later", 429);
     }
-
-    return response.response;
-  }
-
-  static fetch(configService: ConfigService) {
-    if (!this.instance) {
-      this.instance = new this(configService);
-    }
-
-    return this.instance;
   }
 }
