@@ -16,6 +16,8 @@ The API listens to a single endpoint only, `/analyze` for POST requests. The cor
 }
 ```
 
+To run the tests, you can use, `npm run test`.
+
 ## Notes
 
 Besides the requested base functionalities the following things were added:
