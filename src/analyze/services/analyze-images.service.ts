@@ -27,7 +27,7 @@ export class AnalyzeImageService {
       labels: string[]
     }> = [];
 
-    const imageUris = await this.unsplashService.getPhotoUrlsForKeyword(keyword, 40);
+    const imageUris = await this.unsplashService.getPhotoUrlsForKeyword(keyword, 50);
     const annotatedLabels = await this.googleVisionService.detectLabels(imageUris);
 
     const sanitizedCheckLabels = labels.map(label => label.toLowerCase());

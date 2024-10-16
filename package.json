@@ -4,6 +4,8 @@
   "description": "Unsplash test api",
   "main": "index.js",
   "scripts": {
+    "build": "tsc",
+    "start": "node dist/main.js",
     "test": "jest",
     "lint": "eslint \"src/**/*.ts\" --fix"
   },
