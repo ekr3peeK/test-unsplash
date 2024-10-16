@@ -4,8 +4,8 @@
 
 1. Create a copy of the `.env.example` file and fill it with required data
 2. Run `npm install` to install all dependencies
-3. Run `npm build` to build the application
-4. Run `npm start` to start the API
+3. Run `npm run build` to build the application
+4. Run `npm run start` to start the API
 
 The API listens to a single endpoint only, `/analyze` for POST requests. The correct payload that should be sent looks like this:
 
