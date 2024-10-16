@@ -3,10 +3,6 @@
 ## Usage instructions
 
 1. Create a copy of the `.env.example` file and fill it with required data
-  - GOOGLE_APPLICATION_CREDENTIALS should point to a local file with the google credentials JSON and it should be an absolute path!
-  - UNSPLASH_ACCESSKEY should be the access key used for unsplash
-  - LOG_LEVEL should be used to try it out different log levels, but logging is only console logging with a very basic implementation
-  - PORT should be set to the port on which you want to run the application
 2. Run `npm install` to install all dependencies
 3. Run `npm build` to build the application
 4. Run `npm start` to start the API
