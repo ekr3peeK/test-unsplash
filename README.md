@@ -28,7 +28,7 @@ Besides the requested base functionalities the following things were added:
 
 Additional notes:
 
-- Because of the limitation of the Unsplash-JS Demo app, where only 50 requests can be made to the API in one hour, **the system was hardcoded, that for each request, only a maximum of 50 images are requested by Unsplash for each request**. I did not add the CacheService to the UnsplashService, as during my tests, it seems to me that unsplash-js has it's own caching mechanism in place, and does not send the same request again multiple times. If the rate limit is still reached, the system should respond appropiatly with a 429 error code. If you want to remove this limitation, you can do so in the `analyze-image.service.ts` files line 30
+- Because of the limitation of the Unsplash-JS Demo app, where only 50 requests can be made to the API in one hour, **the system was hardcoded, that for each request, only a maximum of 50 images are requested from Unsplash**. If the rate limit is still reached, the system should respond appropiatly with a 429 error code. If you want to remove this limitation, you can do so in the `analyze-image.service.ts:30`. I did not add the CacheService to the UnsplashService, as during my tests, it seems to me that unsplash-js has it's own caching mechanism in place, and does not send the same request again multiple times. 
 
 ## Considerations
 
