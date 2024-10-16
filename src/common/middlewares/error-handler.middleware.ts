@@ -1,7 +1,7 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import { ApiException } from './../exceptions/api.exception';
 
-export const errorHandlerMiddleware = (err: unknown, req: Request, res: Response, next: NextFunction) => {
+export const errorHandlerMiddleware = (err: unknown, req: Request, res: Response) => {
   if (err instanceof ApiException) {
     res.status(err.getStatus() ?? 500).send({
       status: false,

@@ -68,7 +68,7 @@ export class UnsplashService {
       }
   
       return response.response;
-    } catch (err) {
+    } catch {
       throw new ApiException("Failed to fetch photos from unsplash - it is possible that rate limit has been reached, please try again later", 429);
     }
   }
