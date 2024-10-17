@@ -15,13 +15,13 @@ describe('CacheService', () => {
     const cache = new CacheService<string>();
     const now = new Date();
 
-    cache.set('key1', 'value1', 1); // Expires after 1 minute
-    cache.set('key2', 'value2', 2); // Expires after 2 minutes
+    cache.set('key1', 'value1', 1);
+    cache.set('key2', 'value2', 2);
 
     expect(cache.size()).toBe(2);
     
     jest.setSystemTime(addSeconds(now, 1));
-    jest.advanceTimersByTime(1000 * 65); // 65 seconds
+    jest.advanceTimersByTime(1000 * 65);
 
     expect(cache.size()).toBe(1);
     expect(cache.get('key1')).toBeUndefined();
@@ -29,7 +29,6 @@ describe('CacheService', () => {
 
     jest.advanceTimersByTime(1000 * 60);
 
-    // Now, both items should be expired and removed
     expect(cache.size()).toBe(0);
     expect(cache.get('key2')).toBeUndefined();
   });

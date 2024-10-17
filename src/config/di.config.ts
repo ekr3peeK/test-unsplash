@@ -32,37 +32,3 @@ export function configureDI(): AwilixContainer<{
 
   return container;
 }
-
-// type SingletonClassPattern<TInstance> = {
-//   fetch: (...args: any) => TInstance
-// }
-
-// export function useSingletonPattern(singletonPatternedClass: SingletonClassPattern<any>) {
-//   return (...args: any) => {
-//     return singletonPatternedClass.fetch(...args);
-//   }
-// }
-
-// export function configureDI() {
-//   const containerBuilder = new ContainerBuilder();
-
-//   containerBuilder.register(ConfigService.name, ConfigService);
-//   containerBuilder.register(LoggerService.name, () => new LoggerService());
-//   containerBuilder.register(
-//     UnsplashService.name, 
-//     (ConfigService: ConfigService) => UnsplashService.fetch(ConfigService), 
-//     [ConfigService.name]
-//   );
-
-//   containerBuilder.register(GoogleVisionService.name, GoogleVisionService);
-//   containerBuilder.register(AnalyzeImageService.name, useSingletonPattern(AnalyzeImageService),
-//   [
-//     LoggerService.name,
-//     UnsplashService.name,
-//     LoggerService.name
-//   ])
-
-//   containerBuilder.register(AnalyzeController.name, AnalyzeController, [UnsplashService.name]);
-
-//   return containerBuilder;
-// }

@@ -27,7 +27,7 @@ export class UnsplashService {
   }
 
   async getPhotoUrlsForKeyword(query: string, maxResults: number = Infinity) {
-    if (maxResults <= 1) {
+    if (maxResults < 1) {
       throw new BadRequestException("The max results, if specified, should be a positive number");
     }
 
